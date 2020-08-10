@@ -1,0 +1,18 @@
+{
+  "name": "jeelangahelper",
+  "version": "1.0.0",
+  "description": "Jeelanga Helper bot by LWJerri.",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon ."
+  },
+  "repository": "https://github.com/LWJerri/JeelangaHelper",
+  "author": "LWJerri",
+  "license": "MIT",
+  "dependencies": {
+    "discord.js": "^12.2.0",
+    "dotenv": "^8.2.0",
+    "nodemon": "^2.0.4"
+  }
+}
