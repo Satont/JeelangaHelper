@@ -141,7 +141,7 @@ bot.on("raw", async event => {
     const channel = bot.channels.cache.get(data.channel_id);
     const message = await channel.messages.fetch(data.message_id);
     const emojiKey = (data.emoji.id) ? `${data.emoji.name}:${data.emoji.id}` : data.emoji.name;
-    const reaction = message.reactions.cache.get(emojiKey);
+    const member = message.guild.members.cache.get(user.id);
     const guild = bot.guilds.cache.get(message.guild.id);
     const ParentSync = process.env.TicketCategory;
 
@@ -150,36 +150,69 @@ bot.on("raw", async event => {
 
         if(event.t === "MESSAGE_REACTION_ADD"){
             if(data.emoji.name === process.env.CreateReaction){
-                if(!bot.channels.cache.find(x => x.name === `ticket-${user.id}`)){
-                    guild.channels.create(`ticket-${user.id}`, {type: "text", parent: ParentSync})
-                        .then(async channel => {
-                            await channel.lockPermissions();
-                            await channel.updateOverwrite(user.id, {"VIEW_CHANNEL": true})
-                        }).then(() => {
-                            const DeleteTicket = new Discord.MessageEmbed()
-                                .setColor(process.env.EmbedRed)
-                                .setTimestamp()
-                                .setThumbnail(user.displayAvatarURL({size: 4096, dynamic: true}))    
-                                .setTitle(`**Закрытие тикета**`)
-                                .setDescription(`Нажмите на ${process.env.DeleteReaction}, чтобы закрыть тикет!`)
-                                .setFooter(`Jeelanga поддержка`, guild.iconURL({size: 4096, dynamic: true}));
-
-                            return bot.channels.cache.find(x => x.name === `ticket-${user.id}`).send(DeleteTicket)
-                                .then(tcs => {
-                                    tcs.react(process.env.DeleteReaction);
-                                });
-                        });
+                if(member.roles.cache.has(process.env.PremiumRole)){
+                    if(!bot.channels.cache.find(x => x.name === `premium-${user.id}`)){
+                        guild.channels.create(`premium-${user.id}`, {type: "text", parent: ParentSync})
+                            .then(async channel => {
+                                await channel.lockPermissions();
+                                await channel.updateOverwrite(user.id, {"VIEW_CHANNEL": true})
+                            }).then(() => {
+                                const DeleteTicket = new Discord.MessageEmbed()
+                                    .setColor(process.env.EmbedRed)
+                                    .setTimestamp()
+                                    .setThumbnail(user.displayAvatarURL({size: 4096, dynamic: true}))    
+                                    .setTitle(`**Закрытие тикета**`)
+                                    .setDescription(`Нажмите на ${process.env.DeleteReaction}, чтобы закрыть тикет!`)
+                                    .setFooter(`Jeelanga поддержка`, guild.iconURL({size: 4096, dynamic: true}));
+    
+                                return bot.channels.cache.find(x => x.name === `premium-${user.id}`).send(DeleteTicket)
+                                    .then(tcs => {
+                                        tcs.react(process.env.DeleteReaction);
+                                    });
+                            });
+                    }else{
+                        bot.channels.cache.find(x => x.name === `premium-${user.id}`).send(`${user}, для открытия нового тикета Вам необходимо закрыть этот!`);
+                    }
                 }else{
-                    bot.channels.cache.find(x => x.name === `ticket-${user.id}`).send(`${user}, для открытия нового тикета Вам необходимо закрыть этот!`);
+                    if(!bot.channels.cache.find(x => x.name === `ticket-${user.id}`)){
+                        guild.channels.create(`ticket-${user.id}`, {type: "text", parent: ParentSync})
+                            .then(async channel => {
+                                await channel.lockPermissions();
+                                await channel.updateOverwrite(user.id, {"VIEW_CHANNEL": true})
+                            }).then(() => {
+                                const DeleteTicket = new Discord.MessageEmbed()
+                                    .setColor(process.env.EmbedRed)
+                                    .setTimestamp()
+                                    .setThumbnail(user.displayAvatarURL({size: 4096, dynamic: true}))    
+                                    .setTitle(`**Закрытие тикета**`)
+                                    .setDescription(`Нажмите на ${process.env.DeleteReaction}, чтобы закрыть тикет!`)
+                                    .setFooter(`Jeelanga поддержка`, guild.iconURL({size: 4096, dynamic: true}));
+    
+                                return bot.channels.cache.find(x => x.name === `ticket-${user.id}`).send(DeleteTicket)
+                                    .then(tcs => {
+                                        tcs.react(process.env.DeleteReaction);
+                                    });
+                            });
+                    }else{
+                        bot.channels.cache.find(x => x.name === `ticket-${user.id}`).send(`${user}, для открытия нового тикета Вам необходимо закрыть этот!`);
+                    }
                 }
             }
         }
     }
 
     if(event.t === "MESSAGE_REACTION_ADD"){
-        if(channel.name === `ticket-${user.id}`){
-            if(data.emoji.name === process.env.DeleteReaction){
-                channel.delete();
+        if(member.roles.cache.has(process.env.PremiumRole)){
+            if(channel.name === `premium-${user.id}`){
+                if(data.emoji.name === process.env.DeleteReaction){
+                    channel.delete();
+                }
+            }
+        }else{
+            if(channel.name === `ticket-${user.id}`){
+                if(data.emoji.name === process.env.DeleteReaction){
+                    channel.delete();
+                }
             }
         }
     }
