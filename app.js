@@ -140,7 +140,6 @@ bot.on("raw", async event => {
     const user = bot.users.cache.get(data.user_id);
     const channel = bot.channels.cache.get(data.channel_id);
     const message = await channel.messages.fetch(data.message_id);
-    const emojiKey = (data.emoji.id) ? `${data.emoji.name}:${data.emoji.id}` : data.emoji.name;
     const member = message.guild.members.cache.get(user.id);
     const guild = bot.guilds.cache.get(message.guild.id);
     const ParentSync = process.env.TicketCategory;
