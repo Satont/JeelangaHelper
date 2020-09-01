@@ -44,9 +44,10 @@ bot.on("message", async message => {
     }
 
     const group = bot.guilds.cache.get(message.guild.id);
+    const messages = message.content.toLowerCase().replace(/\s+/g, '');
 
-    if(Words.wh_word.some(word => message.content.toLowerCase().includes(word))) return;
-    if(Words.bad_word.some(word => message.content.toLowerCase().includes(word))){
+    if(Words.wh_word.some(word => messages.includes(word))) return;
+    if(Words.bad_word.some(word => messages.includes(word))){
         message.delete();
 
         const BadWord = new Discord.MessageEmbed()
