@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
 const bot = new Discord.Client({disableEveryone: true});
-const NotAllow = require("./block_word.json");
+const Words = require("./words.json");
 require("dotenv").config();
 bot.login(process.env.token);
 
@@ -45,7 +45,8 @@ bot.on("message", async message => {
 
     const group = bot.guilds.cache.get(message.guild.id);
 
-    if(NotAllow.bw.some(word => message.content.toLowerCase().includes(word))){
+    if(Words.wh_word.some(word => message.content.toLowerCase().includes(word))) return;
+    if(Words.bad_word.some(word => message.content.toLowerCase().includes(word))){
         message.delete();
 
         const BadWord = new Discord.MessageEmbed()
