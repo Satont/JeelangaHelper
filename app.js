@@ -4,7 +4,7 @@ const bot = new Discord.Client({disableEveryone: true});
 const Words = require("./words.json");
 require("dotenv").config();
 bot.login(process.env.token);
-logs(client);
+logs(bot);
 
 bot.on("ready", () => {
     bot.user.setActivity(`🔐 ${bot.users.cache.size} участников`, {type: "WATCHING"});
