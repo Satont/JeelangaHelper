@@ -1,8 +1,10 @@
 const Discord = require("discord.js");
+const logs = require('discord-logs');
 const bot = new Discord.Client({disableEveryone: true});
 const Words = require("./words.json");
 require("dotenv").config();
 bot.login(process.env.token);
+logs(client);
 
 bot.on("ready", () => {
     bot.user.setActivity(`🔐 ${bot.users.cache.size} участников`, {type: "WATCHING"});
@@ -33,6 +35,23 @@ bot.on("guildMemberRemove", (member) => {
         .setFooter(`Участник вышел`, group.iconURL({size: 4096, dynamic: true}));
 
     return bot.channels.cache.get(process.env.AdminChannel).send(OldMember);
+});
+
+bot.on("messageContentEdited", (message, oldContent, newContent) => {
+    if(Words.wh_word.some(word => messages.includes(word))) return;
+    if(Words.bad_word.some(word => messages.includes(word))){
+        message.delete();
+
+        const BadWord = new Discord.MessageEmbed()
+            .setColor(process.env.EmbedRed)
+            .setTimestamp()
+            .setThumbnail(message.author.displayAvatarURL({size: 4096, dynamic: true}))
+            .setTitle(`${bot.user.username} » Запрещённое слово!`)
+            .setDescription(`${message.author}, использовать такие слова запрещено!`)
+            .setFooter(`${bot.user.username}`, group.iconURL({size: 4096, dynamic: true}));
+
+        return message.channel.send(BadWord).then(msg => msg.delete({timeout: 60000}));
+    }
 });
 
 bot.on("message", async message => {
