@@ -1,5 +1,5 @@
 const Discord = require("discord.js");
-const logs = require('discord-logs');
+const logs = require("discord-logs");
 const bot = new Discord.Client({disableEveryone: true});
 const Words = require("./words.json");
 require("dotenv").config();
@@ -62,7 +62,7 @@ bot.on("message", async message => {
     }
 
     const group = bot.guilds.cache.get(message.guild.id);
-    const messages = message.content.toLowerCase().replace(/\s+/g, '');
+    const messages = message.content.toLowerCase().replace(/\s+/g, "");
 
     if(Words.wh_word.some(word => messages.includes(word))) return;
     if(Words.bad_word.some(word => messages.includes(word))){
