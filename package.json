@@ -1,6 +1,6 @@
 {
   "name": "jeelangahelper",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Jeelanga Helper Discord bot by LWJerri.",
   "main": "app.js",
   "scripts": {
@@ -11,7 +11,6 @@
   "author": "LWJerri",
   "license": "MIT",
   "dependencies": {
-    "discord-logs": "^1.7.7",
     "discord.js": "^12.2.0",
     "dotenv": "^8.2.0",
     "nodemon": "^2.0.4"
