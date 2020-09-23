@@ -36,8 +36,7 @@ bot.on("guildMemberRemove", (member) => {
 });
 
 bot.on("message", async message => {
-    if(message.author.bot) return;
-    if(message.channel.type === "dm") return;
+    if(message.author.bot || message.channel.type === "dm") return;
     if(message.channel.type === "news"){
         message.react(process.env.ReactionUP);
         message.react(process.env.ReactionDOWN);
@@ -203,17 +202,9 @@ bot.on("raw", async event => {
     }
 
     if(event.t === "MESSAGE_REACTION_ADD"){
-        if(member.roles.cache.has(process.env.PremiumRole)){
-            if(channel.name === `premium-${user.id}`){
-                if(data.emoji.name === process.env.DeleteReaction){
-                    channel.delete();
-                }
-            }
-        }else{
-            if(channel.name === `ticket-${user.id}`){
-                if(data.emoji.name === process.env.DeleteReaction){
-                    channel.delete();
-                }
+        if(channel.name === `${member.roles.cache.has(process.env.PremiumRole) ? "premium-" : "ticket-"}${user.id}`){
+            if(data.emoji.name === process.env.DeleteReaction){
+                channel.delete();
             }
         }
     }
