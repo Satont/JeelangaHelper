@@ -36,6 +36,7 @@ bot.on("guildMemberRemove", (member) => {
 });
 
 bot.on("messageUpdate", (message, newMessage) => {
+    if(message.author.id == process.env.OwnerID) return;
     if(Words.wh_word.some(word => newMessage.content.includes(word))) return;
     if(Words.bad_word.some(word => newMessage.content.includes(word))){
         message.delete();
@@ -62,21 +63,6 @@ bot.on("message", async message => {
 
     const group = bot.guilds.cache.get(message.guild.id);
     const messages = message.content.toLowerCase().replace(/\s+/g, "");
-
-    if(Words.wh_word.some(word => messages.includes(word))) return;
-    if(Words.bad_word.some(word => messages.includes(word))){
-        message.delete();
-
-        const BadWord = new Discord.MessageEmbed()
-            .setColor(process.env.EmbedRed)
-            .setTimestamp()
-            .setThumbnail(message.author.displayAvatarURL({size: 4096, dynamic: true}))
-            .setTitle(`${bot.user.username} » Запрещённое слово!`)
-            .setDescription(`${message.author}, использовать такие слова запрещено!`)
-            .setFooter(`${bot.user.username}`, group.iconURL({size: 4096, dynamic: true}));
-
-        return message.channel.send(BadWord).then(msg => msg.delete({timeout: 60000}));
-    }
 
     if(message.author.id === process.env.OwnerID){
         if(message.content.toLowerCase() === "set-welcome"){
@@ -144,6 +130,22 @@ bot.on("message", async message => {
 
             return bot.channels.cache.get(process.env.RulesChannel).send(RulesEmbed);
         }
+    }
+
+    if(message.author.id == process.env.OwnerID) return;
+    if(Words.wh_word.some(word => messages.includes(word))) return;
+    if(Words.bad_word.some(word => messages.includes(word))){
+        message.delete();
+
+        const BadWord = new Discord.MessageEmbed()
+            .setColor(process.env.EmbedRed)
+            .setTimestamp()
+            .setThumbnail(message.author.displayAvatarURL({size: 4096, dynamic: true}))
+            .setTitle(`${bot.user.username} » Запрещённое слово!`)
+            .setDescription(`${message.author}, использовать такие слова запрещено!`)
+            .setFooter(`${bot.user.username}`, group.iconURL({size: 4096, dynamic: true}));
+
+        return message.channel.send(BadWord).then(msg => msg.delete({timeout: 60000}));
     }
 });
 
