@@ -1,5 +1,5 @@
 const { Client, MessageEmbed } = require("discord.js");
-const bot = new Client({disableMentions: "none"});
+const bot = new Client({disableMentions: "everyone"});
 const Words = require("./words.json");
 require("dotenv").config();
 bot.login(process.env.token);
