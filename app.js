@@ -234,7 +234,7 @@ bot.on("raw", async event => {
     }
 
     if(event.t === "MESSAGE_REACTION_ADD"){
-        if(channel.name === `${a ? "premium-" : "ticket-"}${user.id}`){
+        if(channel.name === `${member.roles.cache.has(process.env.PremiumRole) ? "premium-" : "ticket-"}${user.id}`){
             if(data.emoji.name === process.env.DeleteReaction){
                 channel.delete();
             }
