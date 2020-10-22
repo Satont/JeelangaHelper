@@ -1,7 +1,7 @@
 {
   "name": "jeelangahelper",
-  "version": "1.0.2",
-  "description": "Jeelanga Helper Discord bot by LWJerri.",
+  "version": "1.0.3",
+  "description": "Jeelanga Helper by LWJerri for moderating server.",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
