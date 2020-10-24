@@ -198,27 +198,15 @@ bot.on("raw", async event => {
     if (data.emoji.name !== process.env.CreateReaction) return;
 
     const hasPremiumRole = member.roles.cache.has(process.env.PremiumRole)
-    if (hasPremiumRole) {
-        const existedChannel = bot.channels.cache.find(x => x.name === `premium-${user.id}`)
-        if (existedChannel) {
-            return await existedChannel.send(`${user}, для открытия нового тикета Вам необходимо закрыть этот!`);
-        }
-        const newChannel = await guild.channels.create(`premium-${user.id}`, { type: "text", parent: ParentSync });
-        await newChannel.lockPermissions();
-        await newChannel.updateOverwrite(user.id, { "VIEW_CHANNEL": true })
-
-        const deleteMessage = await newChannel.send(DeleteTicket);
-        await deleteMessage.react(process.env.DeleteReaction);
-    } else {
-        const existedChannel = bot.channels.cache.find(x => x.name === `ticket-${user.id}`)
-        if (existedChannel) {
-            return await existedChannel.send(`${user}, для открытия нового тикета Вам необходимо закрыть этот!`);
-        }
-        const newChannel = await guild.channels.create(`ticket-${user.id}`, { type: "text", parent: ParentSync });
-        await newChannel.lockPermissions();
-        await newChannel.updateOverwrite(user.id, { "VIEW_CHANNEL": true });
-
-        const deleteMessage = await newChannel.send(DeleteTicket);
-        await deleteMessage.react(process.env.DeleteReaction);
+    const channelName = hasPremiumRole ? `premium-${user.id}` : `ticket-${user.id}`
+    const existedChannel = bot.channels.cache.find(x => x.name === channelName)
+    if (existedChannel) {
+        return await existedChannel.send(`${user}, для открытия нового тикета Вам необходимо закрыть этот!`);
     }
+    const newChannel = await guild.channels.create(channelName, { type: "text", parent: ParentSync });
+    await newChannel.lockPermissions();
+    await newChannel.updateOverwrite(user.id, { "VIEW_CHANNEL": true })
+
+    const deleteMessage = await newChannel.send(DeleteTicket);
+    await deleteMessage.react(process.env.DeleteReaction);
 });
