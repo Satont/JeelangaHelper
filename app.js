@@ -193,7 +193,7 @@ bot.on("raw", async event => {
     if (event.t !== "MESSAGE_REACTION_ADD" || user.bot) return;
 
     const hasPremiumRole = member.roles.cache.has(process.env.PremiumRole)
-    const channelName = hasPremiumRole ? `premium-${user.id}` : `ticket-${user.id}`
+    const channelName = `${hasPremiumRole ? 'premium-' : 'ticket-'}${user.id}`
 
     if (channel.name === channelName && data.emoji.name === process.env.DeleteReaction){
         channel.delete();
