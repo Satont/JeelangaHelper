@@ -191,14 +191,16 @@ bot.on("raw", async event => {
         .setFooter(`Jeelanga поддержка`, guild.iconURL({size: 4096, dynamic: true}));
 
     if (event.t !== "MESSAGE_REACTION_ADD" || user.bot) return;
-    if (channel.name === `${member.roles.cache.has(process.env.PremiumRole) ? "premium-" : "ticket-"}${user.id}` && data.emoji.name === process.env.DeleteReaction){
+
+    const hasPremiumRole = member.roles.cache.has(process.env.PremiumRole)
+    const channelName = hasPremiumRole ? `premium-${user.id}` : `ticket-${user.id}`
+
+    if (channel.name === channelName && data.emoji.name === process.env.DeleteReaction){
         channel.delete();
     }
     if (channel.id !== process.env.SupportChannel) return;
     if (data.emoji.name !== process.env.CreateReaction) return;
 
-    const hasPremiumRole = member.roles.cache.has(process.env.PremiumRole)
-    const channelName = hasPremiumRole ? `premium-${user.id}` : `ticket-${user.id}`
     const existedChannel = bot.channels.cache.find(x => x.name === channelName)
     if (existedChannel) {
         return await existedChannel.send(`${user}, для открытия нового тикета Вам необходимо закрыть этот!`);
