@@ -182,6 +182,13 @@ bot.on("raw", async event => {
     const member = message.guild.members.cache.get(user.id);
     const guild = bot.guilds.cache.get(message.guild.id);
     const ParentSync = process.env.TicketCategory;
+    const DeleteTicket = new MessageEmbed()
+        .setColor(process.env.EmbedRed)
+        .setTimestamp()
+        .setThumbnail(user.displayAvatarURL({size: 4096, dynamic: true}))    
+        .setTitle(`**Закрытие тикета**`)
+        .setDescription(`Нажмите на ${process.env.DeleteReaction}, чтобы закрыть тикет!`)
+        .setFooter(`Jeelanga поддержка`, guild.iconURL({size: 4096, dynamic: true}));
 
     if (event.t !== "MESSAGE_REACTION_ADD" || user.bot) return;
     if (channel.name === `${member.roles.cache.has(process.env.PremiumRole) ? "premium-" : "ticket-"}${user.id}` && data.emoji.name === process.env.DeleteReaction){
@@ -200,14 +207,6 @@ bot.on("raw", async event => {
         await newChannel.lockPermissions();
         await newChannel.updateOverwrite(user.id, { "VIEW_CHANNEL": true })
 
-        const DeleteTicket = new MessageEmbed()
-            .setColor(process.env.EmbedRed)
-            .setTimestamp()
-            .setThumbnail(user.displayAvatarURL({size: 4096, dynamic: true}))    
-            .setTitle(`**Закрытие тикета**`)
-            .setDescription(`Нажмите на ${process.env.DeleteReaction}, чтобы закрыть тикет!`)
-            .setFooter(`Jeelanga поддержка`, guild.iconURL({size: 4096, dynamic: true}));
-
         const deleteMessage = await newChannel.send(DeleteTicket);
         await deleteMessage.react(process.env.DeleteReaction);
     } else {
@@ -218,14 +217,6 @@ bot.on("raw", async event => {
         const newChannel = await guild.channels.create(`ticket-${user.id}`, { type: "text", parent: ParentSync });
         await newChannel.lockPermissions();
         await newChannel.updateOverwrite(user.id, { "VIEW_CHANNEL": true });
-
-        const DeleteTicket = new MessageEmbed()
-            .setColor(process.env.EmbedRed)
-            .setTimestamp()
-            .setThumbnail(user.displayAvatarURL({size: 4096, dynamic: true}))    
-            .setTitle(`**Закрытие тикета**`)
-            .setDescription(`Нажмите на ${process.env.DeleteReaction}, чтобы закрыть тикет!`)
-            .setFooter(`Jeelanga поддержка`, guild.iconURL({size: 4096, dynamic: true}));
 
         const deleteMessage = await newChannel.send(DeleteTicket);
         await deleteMessage.react(process.env.DeleteReaction);
