@@ -241,3 +241,18 @@ bot.on("raw", async event => {
         }
     }
 });
+
+/* --------- EXPRESS SERVER --------- */
+
+const express = require("express");
+const pkg = require("./package.json");
+const app = express();
+app.use(express.static("public"));
+
+app.get("*", (req, res) => {
+    res.json({ version: pkg.version });
+});
+
+app.listen("3000", () => {
+    console.log("PORT: 3000");
+});
