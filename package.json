@@ -7,6 +7,9 @@
     "start": "node app.js",
     "dev": "nodemon ."
   },
+  "engines": {
+    "node": "12.x"
+  },
   "repository": "https://github.com/LWJerri/JeelangaHelper",
   "author": "LWJerri",
   "license": "MIT",
