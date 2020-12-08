@@ -7,12 +7,16 @@
     "start": "node app.js",
     "dev": "nodemon ."
   },
+  "engines": {
+    "node": "12.x"
+  },
   "repository": "https://github.com/LWJerri/JeelangaHelper",
   "author": "LWJerri",
   "license": "MIT",
   "dependencies": {
     "discord.js": "^12.2.0",
     "dotenv": "^8.2.0",
+    "express": "^4.17.1",
     "nodemon": "^2.0.4"
   }
 }

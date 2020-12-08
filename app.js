@@ -205,10 +205,4 @@ bot.on("raw", async event => {
     if (existedChannel) {
         return await existedChannel.send(`${user}, для открытия нового тикета Вам необходимо закрыть этот!`);
     }
-    const newChannel = await guild.channels.create(channelName, { type: "text", parent: ParentSync });
-    await newChannel.lockPermissions();
-    await newChannel.updateOverwrite(user.id, { "VIEW_CHANNEL": true })
-
-    const deleteMessage = await newChannel.send(DeleteTicket);
-    await deleteMessage.react(process.env.DeleteReaction);
 });
